@@ -42,7 +42,7 @@ static PyObject *iaFunc(PyObject* self, PyObject* args){
 
 static PyMethodDef IaMethods[] = 
 {
-    {"iafunc", iaFunc, METH_VARARGS, "fais plus 6"},
+    {"iaFunc", iaFunc, METH_VARARGS, "fais plus 6"},
     {NULL, NULL, 0, NULL}
 };
 
