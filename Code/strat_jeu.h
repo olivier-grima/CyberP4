@@ -409,7 +409,7 @@ static int vider_tampon(FILE *fp)
 }
 */
 
-void maj_grille_terminal(int coup, char jeton){
+/*void maj_grille_terminal(int coup, char jeton){
     int statut;
     struct position pos;
   
@@ -437,7 +437,7 @@ void start(){
     initialise_grille();
     affiche_grille();
 }
-
+*/
 /*
 
 int main(void)
