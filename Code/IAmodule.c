@@ -54,6 +54,6 @@ static struct PyModuleDef ia_module ={
     IaMethods
 };
 
-PyMODINIT_FUNC PyInit_somme(void){
+PyMODINIT_FUNC PyInit_ia(void){
     return PyModule_Create(&ia_module);
 }

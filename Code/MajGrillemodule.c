@@ -28,7 +28,7 @@ static PyObject *MAJ_GrilleFunc(PyObject* self, PyObject* args){
     PLAYER = (jeton == J1_JETON) ? J2_JETON : J1_JETON; 
 }
 
-static PyMethodDef IaMethods[] = 
+static PyMethodDef MajGrille_Methods[] = 
 {
     {"MAJ_GrilleFunc", MAJ_GrilleFunc, METH_VARARGS, "mets à jour la grille"},
     {NULL, NULL, 0, NULL}
@@ -39,9 +39,9 @@ static struct PyModuleDef MajGrille_module ={
     "MajGrille", 
     NULL,
     -1,
-    IaMethods
+    MajGrille_Methods
 };
 
-PyMODINIT_FUNC PyInit_somme(void){
+PyMODINIT_FUNC PyInit_MajGrille(void){
     return PyModule_Create(&MajGrille_module);
 }

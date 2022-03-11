@@ -34,6 +34,31 @@ char PLAYER='O';
 
 static char grille[P4_COLONNES][P4_LIGNES];
 
+static unsigned umax(unsigned a, unsigned b)
+{
+    /*
+     * Retourne le plus grand des deux arguments.
+     */
+
+    return (a > b) ? a : b;
+}
+
+static int position_valide(struct position *pos)
+{
+    /*
+     * Vérifie que la position fournie est bien comprise dans la grille.
+     */
+
+    int ret = 1;
+
+    if (pos->colonne >= P4_COLONNES || pos->colonne < 0)
+        ret = 0;
+    else if (pos->ligne >= P4_LIGNES || pos->ligne < 0)
+        ret = 0;
+
+    return ret;
+}
+
 static void affiche_grille(void)
 {
     /*
@@ -326,14 +351,7 @@ static void initialise_grille(void)
 }
 
 
-static unsigned umax(unsigned a, unsigned b)
-{
-    /*
-     * Retourne le plus grand des deux arguments.
-     */
 
-    return (a > b) ? a : b;
-}
 
 
 double nb_aleatoire(void)
@@ -356,21 +374,7 @@ int nb_aleatoire_entre(int min, int max)
 }
 
 
-static int position_valide(struct position *pos)
-{
-    /*
-     * Vérifie que la position fournie est bien comprise dans la grille.
-     */
 
-    int ret = 1;
-
-    if (pos->colonne >= P4_COLONNES || pos->colonne < 0)
-        ret = 0;
-    else if (pos->ligne >= P4_LIGNES || pos->ligne < 0)
-        ret = 0;
-
-    return ret;
-}
 
 
 static int statut_jeu(struct position *pos, char jeton)
