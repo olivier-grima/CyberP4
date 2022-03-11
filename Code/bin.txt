@@ -1,0 +1,6 @@
+/*
+PyMODINIT_FUNC
+initsomme(void){
+    (void) Py_InitModule("somme", SommeMethods);
+}
+/*

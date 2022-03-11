@@ -3,7 +3,7 @@ from time import sleep
 
 #--------------------------- INITIALISATIONS -------------------------------
 #
-player=1
+player=0
 #-----------------------------MOTEUR-------------------------
 # Definition des pins
 M1_En = 13
@@ -21,7 +21,7 @@ GPIO.setup(M1_En, GPIO.OUT)
 GPIO.setup(M1_In1, GPIO.OUT)
 GPIO.setup(M1_In2, GPIO.OUT)
 
-#réglage du PWM
+#reglage du PWM
 M1_Vitesse = GPIO.PWM(M1_En,80)
 M1_Vitesse.start(100)
 
@@ -31,7 +31,7 @@ GPIO.setup(fin_de_course, GPIO.IN)
 
 #--------------------------------CAPTEUR EFFET HALL----------------------------------
 #Initialization
-HALL_SENSOR= 7 #Penser à le changer
+HALL_SENSOR= 7 #Penser a le changer
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(HALL_SENSOR, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 cpt =0   #compteur d'aimants
@@ -75,7 +75,7 @@ def arret() :
 def passage_aimant(channel):
     global cpt
     cpt += 1
-    print("détection de ", cpt, " aimant")
+    print("detection de ", cpt, " aimant")
 
 def goRow(r):
     global cpt
@@ -117,13 +117,13 @@ GPIO.add_event_detect(col7, GPIO.FALLING, callback=passage_jeton, bouncetime=100
 while(True):
     fin =GPIO.input(fin_de_course)
     sens2()
-    print(fin)
+    #print(fin)
     if(fin):
         print("fin course")
         sens1()
         sleep(3)
     #if(player):
-     #   goRow(2)
+        #goRow(2)
     
       
         
