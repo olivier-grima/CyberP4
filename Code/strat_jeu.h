@@ -97,7 +97,7 @@ static void affiche_grille(FILE *fptr)
                 fprintf(fptr, " %c |", grille[col][lgn]);
                 //printf(" %c |", grille[col][lgn]);
             else
-                fprintf(fptr, " %c |", " ");
+                fprintf(fptr, " %c |", ".");
                 //printf(" %c |", ' ');
                 
         fprintf(fptr, "\n");
