@@ -1,16 +1,18 @@
 #include <Python.h>
 #include "strat_jeu.h"
+
 static PyObject *iaFunc(PyObject* self, PyObject* args){
 
-    unsigned meilleurs_col[P4_COLONNES];
-    unsigned nb_meilleurs_col = 0;
-    unsigned max = 0;
-    unsigned col;
+    int meilleurs_col[P4_COLONNES];
+    int nb_meilleurs_col = 0;
+    int max = 0;
+    int col;
+    int resultat;
 
      for (col = 0; col < P4_COLONNES; ++col)
     {
         struct position pos;
-        unsigned longueur;
+        int longueur;
 
         if (grille[col][0] != ' ')
             continue;
@@ -34,9 +36,12 @@ static PyObject *iaFunc(PyObject* self, PyObject* args){
             meilleurs_col[nb_meilleurs_col++] = col;
         }
     }
-   
-    return Py_BuildValue("i", meilleurs_col[nb_aleatoire_entre(0, nb_meilleurs_col - 1)]);
+    resultat = meilleurs_col[0];
+    //resultat = meilleurs_col[2];
+    return Py_BuildValue("i", resultat);
 }
+
+
 
 
 

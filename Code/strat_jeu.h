@@ -59,7 +59,7 @@ static int position_valide(struct position *pos)
     return ret;
 }
 
-static void affiche_grille(void)
+static void affiche_grille(FILE *fptr)
 {
     /*
      * Affiche la grille pour le ou les joueurs.
@@ -68,42 +68,57 @@ static void affiche_grille(void)
     int col;
     int lgn;
 
-    putchar('\n');
+    fprintf(fptr, "\n");
+    //putchar('\n');
 
     for (col = 1; col <= P4_COLONNES; ++col)
-        printf("  %d ", col);
+        fprintf(fptr, " %d", col);
+        //printf("  %d ", col);
 
-    putchar('\n');
-    putchar('+');
+    fprintf(fptr, "\n");
+    fprintf(fptr, "+");
+    //putchar('\n');
+    //putchar('+');
 
     for (col = 1; col <= P4_COLONNES; ++col)
-        printf("---+");
+        fprintf(fptr, "---+");
+        //printf("---+");
 
-    putchar('\n');
+    fprintf(fptr, "\n");
+    //putchar('\n');
 
     for (lgn = 0; lgn < P4_LIGNES; ++lgn)
     {
-        putchar('|');
+        fprintf(fptr, "|");
+        //putchar('|');
 
         for (col = 0; col < P4_COLONNES; ++col)
             if (isalpha(grille[col][lgn]))
-                printf(" %c |", grille[col][lgn]);
+                fprintf(fptr, " %c |", grille[col][lgn]);
+                //printf(" %c |", grille[col][lgn]);
             else
-                printf(" %c |", ' ');
-
-        putchar('\n');
-        putchar('+');
+                fprintf(fptr, " %c |", " ");
+                //printf(" %c |", ' ');
+                
+        fprintf(fptr, "\n");
+        //putchar('\n');
+        fprintf(fptr, "+");
+        //putchar('+');
 
         for (col = 1; col <= P4_COLONNES; ++col)
-            printf("---+");
+            fprintf(fptr, "---+");
+            //printf("---+");
 
-        putchar('\n');
+        fprintf(fptr, "\n");
+        //putchar('\n');
     }
 
     for (col = 1; col <= P4_COLONNES; ++col)
-        printf("  %d ", col);
-
-    putchar('\n');
+        fprintf(fptr, " %d ", col);
+        //printf("  %d ", col);
+    
+    fprintf(fptr, "\n");
+    //putchar('\n');
 }
 
 

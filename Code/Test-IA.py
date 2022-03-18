@@ -5,6 +5,6 @@ print("test");
 print("appel fonction");
 
 print("res : ");
-
-#MajGrille.MAJ_GrilleFunc(6,'X');
-print(ia.iaFunc());
+string1 = 'X'
+print(MajGrille.MAJ_GrilleFunc(5,string1));
+#print(ia.iaFunc());
