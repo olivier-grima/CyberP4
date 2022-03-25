@@ -13,23 +13,28 @@ static PyObject *MAJ_GrilleFunc(PyObject* self, PyObject* args){
         return NULL;
     }
     //on print le joueur venant de jouer et la colonne jouée par le joueur
-    fprintf(fptr,"Le joueur %c a joué : %d\n", *jeton, coup + 1);
+    fprintf(fptr,"Le joueur %c a joué : %d\n", *jeton, coup);
     //on convertit en la position correspondante dans la grille
-    calcule_position(coup, &pos);
+    calcule_position(coup-1, &pos);
     //on met a jour la grille
     grille[pos.colonne][pos.ligne] = *jeton;
     //on affiche la grille sur le terminal
     affiche_grille(fptr);
     //on verifie l'etat du jeu
+    fprintf(fptr,"%c\n", grille[0][0]);
+    fprintf(fptr,"%c\n", grille[1][0]);
+    fprintf(fptr,"%c\n", grille[2][0]);
+    fprintf(fptr,"%c\n", grille[3][0]);
     statut = statut_jeu(&pos, jeton);
     if (statut == STATUT_GAGNE)
         fprintf(fptr,"Le joueur %d a gagné\n", (jeton == J1_JETON) ? 1 : 2);
     else if (statut == STATUT_EGALITE)
         fprintf(fptr,"Égalité\n");
     //c'est au joueur adverse de jouer
-    PLAYER = (jeton == J1_JETON) ? J2_JETON : J1_JETON; 
+    PLAYER = (jeton == J1_JETON) ? J2_JETON : J1_JETON;
     fclose(fptr);
-    return Py_BuildValue("i", P4_COLONNES);
+    //return Py_BuildValue("i", P4_COLONNES);
+    Py_RETURN_NONE;
 }
 
 static PyMethodDef MajGrille_Methods[] = 

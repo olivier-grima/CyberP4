@@ -32,7 +32,7 @@ struct position
 
 char PLAYER='O';
 
-static char grille[P4_COLONNES][P4_LIGNES];
+char grille[P4_COLONNES][P4_LIGNES];
 
 static unsigned umax(unsigned a, unsigned b)
 {
@@ -87,19 +87,22 @@ static void affiche_grille(FILE *fptr)
     fprintf(fptr, "\n");
     //putchar('\n');
 
-    for (lgn = 0; lgn < P4_LIGNES; ++lgn)
+    for (lgn = P4_LIGNES-1; lgn >=0 ; --lgn)
     {
-        fprintf(fptr, "|");
+        fprintf(fptr,"%d",lgn, "|");
         //putchar('|');
 
-        for (col = 0; col < P4_COLONNES; ++col)
-            if (isalpha(grille[col][lgn]))
+        for (col = 0; col < P4_COLONNES; ++col){
+            if (isalpha(grille[col][lgn])){
                 fprintf(fptr, " %c |", grille[col][lgn]);
                 //printf(" %c |", grille[col][lgn]);
-            else
-                fprintf(fptr, " %c |", " ");
-                //printf(" %c |", ' ');
+            }
+            else{
                 
+                fprintf(fptr, " %c |", ' ');
+                //printf(" %c |", ' ');
+            }  
+        }  
         fprintf(fptr, "\n");
         //putchar('\n');
         fprintf(fptr, "+");
@@ -131,7 +134,7 @@ static void calcule_position(int coup, struct position *pos)
     int lgn;
 
     pos->colonne = coup;
-
+  
     for (lgn = P4_LIGNES - 1; lgn >= 0; --lgn)
         if (grille[pos->colonne][lgn] == ' ')
         {
@@ -351,11 +354,13 @@ static int ia(void)
 }
 */
 
+
+/*
 static void initialise_grille(void)
 {
-    /*
+    
      * Initalise les caractères de la grille.
-     */
+     
 
     unsigned col;
     unsigned lgn;
@@ -365,8 +370,7 @@ static void initialise_grille(void)
             grille[col][lgn] = ' ';
 }
 
-
-
+*/
 
 
 double nb_aleatoire(void)
@@ -387,10 +391,6 @@ int nb_aleatoire_entre(int min, int max)
 
     return nb_aleatoire() * (max - min + 1) + min;
 }
-
-
-
-
 
 static int statut_jeu(struct position *pos, char jeton)
 {
