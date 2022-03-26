@@ -109,12 +109,13 @@ void board(){
   }
 }
 
+//ici il faudra passer en paramètre le numéro de la colonne jouée par l'humain détectée par les capteurs optiques
 void choose(){
     // choose A B C D E F G:
     char c;
     
     while (1){
-      printf("\nChoose bin: ");
+      printf("\nChoose row: ");
       scanf(" %c", &c);
       switch(c){
       case 'A':
@@ -159,6 +160,7 @@ void choose(){
     }
 }
 
+//ici return la colonne jouée par le robot ? 
 void ordi(){
   //the ordi make a move
   bin = rand()%8;
