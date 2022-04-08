@@ -10,10 +10,10 @@ J2_JETON='X'
 player=J1_JETON
 
 #------------------------------setup library-------------------------------
-
 _lib = ct.cdll.LoadLibrary("./connect4_py.so")
 #return type de ia
 _lib.ia.restype = ct.c_int
+_lib.update.argtypes(ct.c_int, ct.c_char)
 
 #-----------------------------SERVO-------------------------
 GPIO.setmode(GPIO.BCM)
