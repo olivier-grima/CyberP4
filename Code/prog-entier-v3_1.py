@@ -1,9 +1,38 @@
 import RPi.GPIO as GPIO
+import time
 from time import sleep
+import ctypes as ct
+
 
 #--------------------------- INITIALISATIONS -------------------------------
-#
-player=0
+J1_JETON='O'
+J2_JETON='X'
+global player
+
+#------------------------------setup library-------------------------------
+
+_lib = ct.cdll.LoadLibrary("./connect4_py.so")
+#return type de ia
+_lib.ia.restype = ct.c_int
+_lib.update.argtypes = [ct.c_int, ct.c_wchar]
+
+#-----------------------------SERVO-------------------------
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(12, GPIO.OUT)
+GPIO.setwarnings(True)
+
+ajoutAngle = 5
+
+angle1 = 90
+angle2 = 180
+duree = 2
+duree2 = 0.5
+
+
+angleChoisi1 = angle1/10 + ajoutAngle
+angleChoisi2 = angle2/10 + ajoutAngle
+
+pwm=GPIO.PWM(12,100)
 #-----------------------------MOTEUR-------------------------
 # Definition des pins
 M1_En = 13
@@ -81,28 +110,49 @@ def goRow(r):
     global cpt
     while(cpt!=r):
         sens2()
-    cpt=0
     arret()
-    sleep(2)
-    sens1()
      
 #---------CAPTEURS IR ----------------
 def passage_jeton(channel):
+    colonne = 0
     global player
-    switcher = {
-        25 : "colonne 1",
-        6 : "colonne 2",
-        26 : "colonne 3",
-        17 : "colonne 4",
-        27 : "colonne 5",
-        22 : "colonne 6",
-        23 : "colonne 7",
-    }
-    print(switcher.get(channel,"Colonne invalide"))
-    player=1
+    if(channel==25):
+        _lib.update(1, player)
+    if(channel==6):
+        _lib.update(2, player)
+    if(channel==26):
+        _lib.update(3, player)
+    if(channel==17):
+        _lib.update(4, player)
+    if(channel==27):
+        _lib.update(5, player)
+    if(channel==22):
+        _lib.update(6, player)
+    if(channel==23):
+        _lib.update(7, player)
+    #switcher = {
+     #   25 : _lib.update(1, player),
+    #   6 : _lib.update(2, player),
+     #   26 : _lib.update(3, player),
+     #   17 : _lib.update(4, player),
+     #   27 : _lib.update(5, player),
+     #   22 : _lib.update(6, player),
+     #   23 : _lib.update(7, player),
+    #}
+    player = J1_JETON if (player==J2_JETON) else J2_JETON
+
     
-
-
+def drop():
+    pwm.start(5)
+    pwm.ChangeDutyCycle(angleChoisi1)
+    time.sleep(duree2)
+    pwm.ChangeDutyCycle(angleChoisi2)
+    time.sleep(duree2)
+    pwm.ChangeDutyCycle(0)
+    #pwm.stop()
+    print("jeton laché")
+    
+#---------------------interruptions----------------------------------------
 GPIO.add_event_detect(HALL_SENSOR, GPIO.FALLING, callback=passage_aimant, bouncetime=100)
 GPIO.add_event_detect(col1, GPIO.FALLING, callback=passage_jeton, bouncetime=100)
 GPIO.add_event_detect(col2, GPIO.FALLING, callback=passage_jeton, bouncetime=100)
@@ -111,23 +161,21 @@ GPIO.add_event_detect(col4, GPIO.FALLING, callback=passage_jeton, bouncetime=100
 GPIO.add_event_detect(col5, GPIO.FALLING, callback=passage_jeton, bouncetime=100)
 GPIO.add_event_detect(col6, GPIO.FALLING, callback=passage_jeton, bouncetime=100)
 GPIO.add_event_detect(col7, GPIO.FALLING, callback=passage_jeton, bouncetime=100)
-    
+
+#--------------------------------main------------
+player=J1_JETON
+_lib.debutPartie()
 while(True):
+    #prise position 0...
     fin =GPIO.input(fin_de_course)
-    
-    sens1()
-    #print(fin)
-    if(fin):
-        cpt=0;
-        goRow(7);
-        print("fin course")
-        #sens2()
-        sleep(3)
-    #if(player):
-        #goRow(2)
-    
-      
-        
-        
-         
-    
+    if(not fin):
+        sens1()
+        cpt=0
+    else:
+        if(player == J2_JETON):#quand c'est au tour du robot
+            print("dans le if du python\n")
+            col_R = _lib.ia()
+            print("l'ia va joué dans la colonne : ", col_R, "\n")
+            goRow(col_R)
+            drop()
+            #sens1()

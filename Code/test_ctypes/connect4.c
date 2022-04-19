@@ -168,11 +168,11 @@ static unsigned calcule_nb_jetons_depuis(struct position *pos, char jeton)
 static int coup_valide(int col)
 {
     
-    * Si la colonne renseignée est inférieure ou égale à zéro
+     * Si la colonne renseignée est inférieure ou égale à zéro
      * ou que celle-ci est supérieure à la longueur du tableau
      * ou que la colonne indiquée est saturée
      * alors le coup est invalide.
-     *
+     
 
     if (col <= 0 || col > P4_COLONNES || grille[col - 1][0] != ' ')
         return 0;
@@ -180,7 +180,6 @@ static int coup_valide(int col)
     return 1;
 }
 */
-
 static int demande_action(int *coup)
 {
     /*
@@ -228,7 +227,7 @@ static int demande_action(int *coup)
 static int demande_nb_joueur(void)
 {
     
-     //Demande et récupère le nombre de joueurs.
+     Demande et récupère le nombre de joueurs.
      
 
     int njoueur = 0;
@@ -255,8 +254,8 @@ static int demande_nb_joueur(void)
     }
 
     return njoueur;
-}
-*/
+}*/
+
 
 static int grille_complete(void)
 {
@@ -317,7 +316,6 @@ static int ia(void)
             meilleurs_col[nb_meilleurs_col++] = col;
         }
     }
-
 
     return meilleurs_col[nb_aleatoire_entre(0, nb_meilleurs_col - 1)];
 }
@@ -425,49 +423,52 @@ int main(void)
 
     initialise_grille();
     affiche_grille();
-    //njoueur = demande_nb_joueur();
+   /* njoueur = demande_nb_joueur();
 
-    /*if (!njoueur)
-        return EXIT_FAILURE;
-*/
-    while (1){
+    if (!njoueur)
+        return EXIT_FAILURE;*/
+
+    while (1)
+    {
         struct position pos;
         int action;
         int coup;
 
-        if (/*njoueur == 1 &&*/ jeton == J2_JETON){
+        if (/*njoueur == 1 &&*/ jeton == J2_JETON)
+        {
             coup = ia();
             printf("Joueur 2 : %d\n", coup + 1);
             calcule_position(coup, &pos);
         }
-        else{
-            printf("Joueur 1 : "/* , (jeton == J1_JETON) ?1 : 2*/);
+        else
+        {
+            printf("Joueur 1 : " /* (jeton == J1_JETON) ?1 : 2*/);
             action = demande_action(&coup);
 
             if(action==ACT_QUITTER){
                 return 0;
             }
-/*
-            if (action == ACT_ERR){
+
+
+         /*   if (action == ACT_ERR)
                 return EXIT_FAILURE;
-            }
-            else if (action == ACT_QUITTER){
+            else if (action == ACT_QUITTER)
                 return 0;
-            }
-            else if (action == ACT_NOUVELLE_SAISIE || !coup_valide(coup)){
+            else if (action == ACT_NOUVELLE_SAISIE || !coup_valide(coup))
+            {
                 fprintf(stderr, "Vous ne pouvez pas jouer à cet endroit\n");
                 continue;
             }
-            */
+*/
             calcule_position(coup - 1, &pos);
         }
+
         grille[pos.colonne][pos.ligne] = jeton;
         affiche_grille();
         statut = statut_jeu(&pos, jeton);
 
-        if (statut != STATUT_OK){
+        if (statut != STATUT_OK)
             break;
-        }
 
         jeton = (jeton == J1_JETON) ? J2_JETON : J1_JETON;    
     }

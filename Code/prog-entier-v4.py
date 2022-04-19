@@ -1,9 +1,28 @@
 import RPi.GPIO as GPIO
+from RpiMotorLib import RpiMotorLib
+import time
 from time import sleep
 
 #--------------------------- INITIALISATIONS -------------------------------
 #
 player=0
+#-----------------------------SERVO-------------------------
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(12, GPIO.OUT)
+GPIO.setwarnings(True)
+
+ajoutAngle = 5
+
+angle1 = 90;
+angle2 = 180;
+duree = 2;
+duree2 = 0.8;
+
+
+angleChoisi1 = angle1/10 + ajoutAngle
+angleChoisi2 = angle2/10 + ajoutAngle
+
+pwm=GPIO.PWM(12,100)
 #-----------------------------MOTEUR-------------------------
 # Definition des pins
 M1_En = 13
@@ -24,6 +43,16 @@ GPIO.setup(M1_In2, GPIO.OUT)
 #reglage du PWM
 M1_Vitesse = GPIO.PWM(M1_En,80)
 M1_Vitesse.start(100)
+
+#-----------------------------STEPPER--------------------
+
+#define GPIO pins
+direction = 15     #Direction (DIR) GPIO Pin
+step = 18        #Step GPIO Pin
+
+mymotortest = RpiMotorLib.A4988Nema(direction, step, (False,False,False), "DRV8825")
+GPIO.setup(False, GPIO.OUT)
+
 
 #-----------------------------FIN DE COURSE---------------------
 fin_de_course= 14
@@ -70,7 +99,17 @@ def arret() :
     GPIO.output(Pins[0], GPIO.LOW)
     GPIO.output(Pins[1], GPIO.LOW)
     #print("Moteur s'arrete.")
-
+    
+#-------------- STEPPER --------------
+def load(direction, steps):
+    GPIO.output(False, GPIO.LOW)
+    mymotortest.motor_go(direction,
+                         "Full",
+                          steps,
+                         .005,
+                         False,
+                         .05) #1er false = monte
+    
 #--------- CAPTEUR EFFET HALL --------
 def passage_aimant(channel):
     global cpt
@@ -83,8 +122,6 @@ def goRow(r):
         sens2()
     cpt=0
     arret()
-    sleep(2)
-    sens1()
      
 #---------CAPTEURS IR ----------------
 def passage_jeton(channel):
@@ -98,8 +135,18 @@ def passage_jeton(channel):
         22 : "colonne 6",
         23 : "colonne 7",
     }
-    print(switcher.get(channel,"Colonne invalide"))
+    #print(switcher.get(channel,"Colonne invalide"))
     player=1
+    
+def drop():
+    pwm.start(5)
+    pwm.ChangeDutyCycle(angleChoisi1)
+    time.sleep(duree2)
+    pwm.ChangeDutyCycle(angleChoisi2)
+    time.sleep(duree2)
+    pwm.ChangeDutyCycle(0)
+    #pwm.stop()
+    print("jeton laché")
     
 
 
@@ -114,15 +161,28 @@ GPIO.add_event_detect(col7, GPIO.FALLING, callback=passage_jeton, bouncetime=100
     
 while(True):
     fin =GPIO.input(fin_de_course)
-    
-    sens1()
+
+    #sens1()   Initialisation sans fin de course
     #print(fin)
-    if(fin):
-        cpt=0;
-        goRow(7);
-        print("fin course")
-        #sens2()
-        sleep(3)
+    if(not fin):
+        sens1()
+        
+    
+    else:
+        for i in range(7):
+            load(False,148)
+            sleep(2)
+            cpt=0
+            goRow(i+1)
+            print("Colonne", i)
+            drop()
+            #sleep(2)
+            sens1()
+            print("fin course")
+            #sens2()
+            #sleep(2)
+            i = i+ 1
+        load(True,1015) 
     #if(player):
         #goRow(2)
     
@@ -131,3 +191,6 @@ while(True):
         
          
     
+
+
+

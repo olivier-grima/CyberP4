@@ -4,6 +4,21 @@ from time import sleep
 #--------------------------- INITIALISATIONS -------------------------------
 #
 player=0
+#-----------------------------SERVO-------------------------
+GPIO.setup(12, GPIO.OUT)
+
+ajoutAngle = 5
+
+angle1 = 90;
+angle2 = 180;
+duree = 2;
+duree2 = 0.5;
+
+
+angleChoisi1 = angle1/10 + ajoutAngle
+angleChoisi2 = angle2/10 + ajoutAngle
+
+pwm=GPIO.PWM(12,100)
 #-----------------------------MOTEUR-------------------------
 # Definition des pins
 M1_En = 13
@@ -118,11 +133,23 @@ while(True):
     sens1()
     #print(fin)
     if(fin):
-        cpt=0;
-        goRow(7);
-        print("fin course")
-        #sens2()
-        sleep(3)
+        for i in range(7):
+            cpt=0
+            goRow(i+1)
+            pwm.start(5)
+
+    
+            pwm.ChangeDutyCycle(angleChoisi1)
+            time.sleep(duree2)
+            pwm.ChangeDutyCycle(angleChoisi2)
+            time.sleep(duree2)
+            pwm.stop()
+            print("fin course")
+            print("Colonne", i)
+            print("jeton laché")
+            #sens2()
+            sleep(1)
+            i = i+ 1
     #if(player):
         #goRow(2)
     
@@ -131,3 +158,4 @@ while(True):
         
          
     
+
