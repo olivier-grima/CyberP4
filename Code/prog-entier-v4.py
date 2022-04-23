@@ -137,7 +137,8 @@ def passage_jeton(channel):
     }
     #print(switcher.get(channel,"Colonne invalide"))
     player=1
-    
+ 
+#----------SERVO DROPPER----------------
 def drop():
     pwm.start(5)
     pwm.ChangeDutyCycle(angleChoisi1)
