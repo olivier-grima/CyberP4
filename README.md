@@ -9,4 +9,4 @@ python3 Setup-MapGrille.py build_ext --inplace
 python3 Test-IA.py
 
 
-https://youtu.be/gDlWA93tRzw
+Vidéo de démonstration ici -> https://youtu.be/gDlWA93tRzw
