@@ -7,3 +7,6 @@ python3 Setup-IA.py build_ext --inplace
 python3 Setup-MapGrille.py build_ext --inplace
 
 python3 Test-IA.py
+
+
+https://youtu.be/gDlWA93tRzw
